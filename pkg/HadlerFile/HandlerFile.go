@@ -14,19 +14,19 @@ type FileSource struct {
 func (f FileSource) Handler(stringPattern *regexp.Regexp) (currentCount uint64, err error) {
 	file, err := os.Open(f.Filename)
 	if err != nil {
-		return 0, fmt.Errorf("error in open file: %w", err)
+		return 0, fmt.Errorf("error in open file: %s", err.Error())
 	}
 
 	defer func() {
 		err = file.Close()
 		if err != nil {
-			err = fmt.Errorf("error in close file: %w", err)
+			err = fmt.Errorf("error in close file: %s", err.Error())
 		}
 	}()
 
 	content, err := io.ReadAll(file)
 	if err != nil {
-		return 0, fmt.Errorf("error read content in file %s: %w", f.Filename, err)
+		return 0, fmt.Errorf("error read content in file %s: %s", f.Filename, err.Error())
 	}
 
 	count := len(stringPattern.FindAll(content, -1))
